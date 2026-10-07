@@ -2,7 +2,7 @@ On this page, you'll find a detailed FAQ covering various topics related to Eeve
 
 # Versions and Support
 
-EeveeSpotify currently supports Spotify version **9.1.60** (the latest version compatible with iOS 16.1+). 
+EeveeSpotify currently supports Spotify version **9.1.68** (the latest version compatible with iOS 16.1+). 
 
 If you are jailbroken, install the latest .deb from the [releases page](https://github.com/jaydenjcpy/EeveeSpotifyReincarnated/releases), along with the latest Spotify from the App Store. After installation, open the EeveeSpotify settings (accessible from your Spotify profile settings) and reset data so it will properly patch Premium features.
 
@@ -10,7 +10,7 @@ For non-jailbroken devices, use the patched IPA files available in the releases.
 - **TrollStore** (recommended for iOS 14-16.6.1, 17.0)
 - **Sideloadly** (7-day signing)
 - **AltStore** (7-day signing)
-- **Signing services** with paid certificates
+- **Signing services** with paid certificates, such as [**FlareStore**](https://flarestore.app)
 
 EeveeSpotify only supports iOS and iPadOS and is not planned to be supported on other platforms. You can sideload the iPadOS version on an Apple Silicon Mac, though.
 
@@ -28,7 +28,7 @@ If you're using a paid certificate, to navigate to a song from the lock screen, 
 
 EeveeSpotify does not accept free feature requests. If you need something, feel free to implement it yourself, or submit a pull request if you think others may find it useful. If you're willing to pay for a feature, open an issue to discuss further opportunities.
 
-Note that many Premium features are server-sided and will never work without a Premium subscription (e.g., very high quality audio, offline downloads on mobile data).
+Note that many Premium features are server-sided and will never work without a Premium subscription (e.g., very high quality audio, AI DJ, offline downloads on mobile data).
 
 # Troubleshooting & Issues
 

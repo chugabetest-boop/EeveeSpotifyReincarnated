@@ -5,6 +5,7 @@ extension UserDefaults {
     
     private static let musixmatchTokenKey = "musixmatchToken"
     private static let darkPopUpsKey = "darkPopUps"
+    private static let debugLoggingEnabledKey = "debugLoggingEnabled"
     private static let patchTypeKey = "patchType"
     private static let trueShuffleEnabledKey = "trueShuffleEnabled"
     private static let overwriteConfigurationKey = "overwriteConfiguration"
@@ -12,7 +13,9 @@ extension UserDefaults {
     private static let lyricsOptionsKey = "lyricsOptions"
     private static let hasShownCommonIssuesTipKey = "hasShownCommonIssuesTip"
     private static let hasPatchedBootstrapKey = "eeveeHasPatchedBootstrap"
+    private static let cachedCustomizeDataKey = "eeveeCachedCustomizeData"
     private static let iconNamePrettifyKey = "iconNamePrettify"
+    private static let cleanShareLinksKey = "cleanShareLinks"
 
     static var musixmatchToken: String {
         get {
@@ -29,6 +32,15 @@ extension UserDefaults {
         }
         set (darkPopUps) {
             container.set(darkPopUps, forKey: darkPopUpsKey)
+        }
+    }
+
+    static var debugLoggingEnabled: Bool {
+        get {
+            container.object(forKey: debugLoggingEnabledKey) as? Bool ?? false
+        }
+        set (debugLoggingEnabled) {
+            container.set(debugLoggingEnabled, forKey: debugLoggingEnabledKey)
         }
     }
 
@@ -70,6 +82,22 @@ extension UserDefaults {
         set { container.set(newValue, forKey: hasPatchedBootstrapKey) }
     }
 
+    /// Persisted copy of the last patched customize response body. The in-memory
+    /// cache in SpotifyResponsePatcher dies with the process, but Spotify
+    /// re-fetches customize with ETag revalidation on every warm relaunch and
+    /// gets a 304 with no body — without this persisted copy the tweak has
+    /// nothing to replay and free-tier/ad flags re-enable mid-session.
+    static var cachedCustomizeData: Data? {
+        get { container.data(forKey: cachedCustomizeDataKey) }
+        set {
+            if let newValue {
+                container.set(newValue, forKey: cachedCustomizeDataKey)
+            } else {
+                container.removeObject(forKey: cachedCustomizeDataKey)
+            }
+        }
+    }
+
     static var hasShownCommonIssuesTip: Bool {
         get {
             container.bool(forKey: hasShownCommonIssuesTipKey)
@@ -88,5 +116,20 @@ extension UserDefaults {
         set {
             container.set(newValue, forKey: iconNamePrettifyKey)
         }
+    }
+
+    /// When true, the `si` tracking parameter is stripped from shared Spotify links.
+    static var cleanShareLinks: Bool {
+        get {
+            container.object(forKey: cleanShareLinksKey) as? Bool ?? false
+        }
+        set (cleanShareLinks) {
+            container.set(cleanShareLinks, forKey: cleanShareLinksKey)
+        }
+    }
+
+    static var roundedArtwork: Bool {
+        get { container.bool(forKey: "eeveeRoundedArtwork") }
+        set { container.set(newValue, forKey: "eeveeRoundedArtwork") }
     }
 }

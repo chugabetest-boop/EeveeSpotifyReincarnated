@@ -1,6 +1,6 @@
 import Foundation
 import SwiftUI
-import libroot
+import EeveeSpotifyC
 
 class BundleHelper {
     private let bundleName = "EeveeSpotify"
@@ -16,16 +16,16 @@ class BundleHelper {
         if let path = Bundle.main.path(forResource: bundleName, ofType: "bundle"),
            let b = Bundle(path: path) {
             self.bundle = b
-            NSLog("[EeveeSpotify] Loaded bundle from main bundle: \(path)")
+            eeveeLog("[EeveeSpotify] Loaded bundle from main bundle: \(path)")
         } 
         // If not found, try locating in file system (jailbreak path)
         else {
-            let jbPath = jbRootPath("/Library/Application Support/\(bundleName).bundle")
+            let jbPath = EeveeJBRootPath("/Library/Application Support/\(bundleName).bundle")
             if let b = Bundle(path: jbPath) {
                 self.bundle = b
-                NSLog("[EeveeSpotify] Loaded bundle from filesystem: \(jbPath)")
+                eeveeLog("[EeveeSpotify] Loaded bundle from filesystem: \(jbPath)")
             } else {
-                NSLog("[EeveeSpotify] ERROR: Could not find EeveeSpotify.bundle!")
+                eeveeLog("[EeveeSpotify] ERROR: Could not find EeveeSpotify.bundle!")
                 self.bundle = nil
             }
         }
@@ -35,7 +35,7 @@ class BundleHelper {
            let enB = Bundle(path: enPath) {
             self.enBundle = enB
         } else {
-            NSLog("[EeveeSpotify] WARNING: Could not load en.lproj from bundle")
+            eeveeLog("[EeveeSpotify] WARNING: Could not load en.lproj from bundle")
             self.enBundle = nil
         }
     }
@@ -62,10 +62,17 @@ class BundleHelper {
     }
     
     func resolveConfiguration() throws -> ResolveConfiguration {
+        let spotifyVersion = Bundle.main.object(
+            forInfoDictionaryKey: "CFBundleShortVersionString"
+        ) as? String ?? ""
+        let resourceName = BundledConfigurationPolicy.resourceName(for: spotifyVersion)
+
         guard let bundle = self.bundle,
-              let url = bundle.url(forResource: "resolveconfiguration", withExtension: "bnk") else {
+              let url = bundle.url(forResource: resourceName, withExtension: "bnk") else {
             throw NSError(domain: "EeveeSpotify", code: 404, userInfo: [NSLocalizedDescriptionKey: "Configuration not found"])
         }
+
+        writeDebugLog("[CONFIG] Using \(resourceName).bnk for Spotify \(spotifyVersion)")
         
         return try ResolveConfiguration(
             serializedBytes: try Data(contentsOf: url)

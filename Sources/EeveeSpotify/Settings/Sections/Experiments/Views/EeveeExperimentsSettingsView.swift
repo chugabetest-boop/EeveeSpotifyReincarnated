@@ -22,6 +22,7 @@ struct EeveeExperimentsSettingsView: View {
                     isOn: $experimentsOptions.showInstagramDestination
                 )
             }
+
         }
         .onChange(of: experimentsOptions) { options in
             UserDefaults.experimentsOptions = options
@@ -31,7 +32,7 @@ struct EeveeExperimentsSettingsView: View {
             }
         }
         
-        .listStyle(GroupedListStyle())
+        .eeveeSettingsStyle()
         .animation(.default, value: experimentsOptions)
     }
 }

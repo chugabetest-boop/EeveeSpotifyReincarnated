@@ -55,8 +55,13 @@ extension URL {
         self.path.contains("premium-marketing/upsellOffer")
     }
 
+    // ClientMessagingPlatform marketing messages (win-back fullscreens, Home
+    // Premium banners). 9.1.84 renamed the RPC set from FetchMessageList to
+    // FetchMessage / FetchMessageForPreview on
+    // com.spotify.pendragon.v1.ClientMessageService; "FetchMessage" is a
+    // substring of all three, so one match covers every known variant.
     var isPendragonFetchMessageList: Bool {
-        self.path.contains("pendragon") && self.path.contains("FetchMessageList")
+        self.path.contains("pendragon") && self.path.contains("FetchMessage")
     }
 
     var isPushkaTokens: Bool {
@@ -100,6 +105,10 @@ extension URL {
            path.contains("/sponsored/") ||
            path.contains("/promoted/") ||
            path.contains("/upsell/") ||
+           path.contains("/premium-upsell") ||
+           path.contains("/upsell-banner") ||
+           path.contains("/upsell-card") ||
+           path.contains("/referrals/upsell") ||
            path.contains("/campaign/") ||
            path.contains("/billboard/") ||
            path.contains("/banner/") ||
@@ -110,7 +119,8 @@ extension URL {
            path.contains("/search-ad/") ||
            path.contains("/home-ad/") ||
            path.contains("/marquee/") ||
-           path.contains("/leavebehind/") ||
+           path.contains("/leavebehind") ||
+           path.contains("/leave-behind") ||
            path.contains("/display-ad/") ||
            path.contains("/fullbleed/") ||
            path.contains("/leaderboard/") ||
